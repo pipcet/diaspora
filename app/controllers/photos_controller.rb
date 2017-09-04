@@ -165,17 +165,25 @@ class PhotosController < ApplicationController
   def rescuing_photo_errors
     begin
       yield
-    rescue TypeError
+    rescue TypeError => e
       message = I18n.t 'photos.create.type_error'
-      respond_with @photo, :location => photos_path, :error => message
+      respond_to do |format|
+        format.json{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+        format.html{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+      end
 
-    rescue CarrierWave::IntegrityError
+    rescue CarrierWave::IntegrityError => e
       message = I18n.t 'photos.create.integrity_error'
-      respond_with @photo, :location => photos_path, :error => message
-
+      respond_to do |format|
+        format.json{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+        format.html{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+      end
     rescue RuntimeError => e
       message = I18n.t 'photos.create.runtime_error'
-      respond_with @photo, :location => photos_path, :error => message
+      respond_to do |format|
+        format.json{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+        format.html{ render(:layout => false, :json => {"success" => false, "error" => e, "data" => @photo}.to_json )}
+      end
       raise e
     end
   end
