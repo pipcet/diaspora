@@ -135,9 +135,7 @@ app.views.PublisherUploader = Backbone.View.extend({
   _cancelPhotoUpload: function() {
     var publisher = this.publisher;
     var placeholder = publisher.photozoneEl.find("li.loading").first();
-    placeholder
-      .removeClass("loading")
-      .find("img").remove();
+    placeholder.remove();
   },
 
   // remove an already uploaded photo
